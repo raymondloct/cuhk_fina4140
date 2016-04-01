@@ -1,0 +1,339 @@
+\documentclass[leqno,12pt]{article}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{pictex}
+\usepackage{mdwlist}
+\usepackage{graphicx}
+\usepackage[neverdecrease]{paralist}
+\usepackage{enumerate}
+\setdefaultitem{}{\textbullet}{}{}
+\textheight=10in
+\textwidth=6.9in
+\topmargin=0.0in
+\headheight=-0.3in
+\headsep=-0.3in
+\leftmargin=-0.2in
+\rightmargin=-0.4in
+\oddsidemargin=-0.3in
+\evensidemargin=-0.5in
+\parindent=0.0in
+\setdefaultleftmargin{}{\parindent}{}{}{}{}
+\pagestyle{empty}
+\def\CC{\mathbb{C}}
+\def\NN{\mathbb{N}}
+\def\QQ{\mathbb{Q}}
+\def\RR{\mathbb{R}}
+\def\ZZ{\mathbb{Z}}
+\def\a{\alpha}
+\def\b{\beta}
+\def\g{\gamma}
+\def\e{\varepsilon}
+\def\X{\chi}
+\def\z{\zeta}
+\def\s{\sigma}
+\def\d{\delta}
+\def\w{\omega}
+\def\L{\Lambda}
+\def\l{\lambda}
+\linespread{1.2}
+\title{\large FINA 4140 Computational Finance Assignment One}
+\author{Group I\\
+Lo Chun Tung, Ng Wing Yung, Yiu Kit Ho, Yu Cheuk Hin Anthony}
+\begin{document}
+\begin{enumerate}
+\item Problem 1
+\begin{enumerate}
+\item Define $q=1-p$. Suppose the r-th head appears at the n-th toss. \\
+Then there are exactly $r-1$ heads in the first $n-1$ tosses, and the n-th toss must be head.
+\[ Pr(X=n)=\left(\binom{n-1}{r-1}p^{r-1}q^{n-r}\right)p=\binom{n-1}{r-1}p^rq^{n-r} \]
+\item Notice that $\binom{n}{r}=\frac{n}{r}\binom{n-1}{r-1}$. Also, $\frac{1}{(1-x)^{r+1}}=\displaystyle\sum_{n=r}^{\infty}\binom{n}{r}x^{n-r}$
+\begin{eqnarray*}
+E(X)&=&\displaystyle\sum_{n=r}^{\infty}n\binom{n-1}{r-1}p^rq^{n-r}=\displaystyle\sum_{n=r}^{\infty}r\binom{n}{r}p^rq^{n-r}=rp^r\displaystyle\sum_{n=r}^{\infty}\binom{n}{r}q^{n-r}\\
+&=&rp^r\frac{1}{(1-q)^{r+1}}=rp^rp^{-1-r}=\frac{r}{p}
+\end{eqnarray*}
+\item \begin{eqnarray*}
+E(X(X+1))&=&\displaystyle\sum_{n=r}^{\infty}n(n+1)\binom{n-1}{r-1}p^rq^{n-r}=\displaystyle\sum_{n=r}^{\infty}r(r+1)\binom{n+1}{r+1}p^rq^{n-r}\\
+&=&r(r+1)p^r\displaystyle\sum_{n=r}^{\infty}\binom{n+1}{r+1}q^{n-r}=r(r+1)p^r\frac{1}{(1-q)^{r+2}}=r(r+1)p^rp^{-2-r}\\
+&=&\frac{r(r+1)}{p^2}\\
+Var(X)&=&E(X^2)-(E(X))^2=\left(\frac{r(r+1)}{p^2}-\frac{r}{p}\right)-\left(\frac{r}{p}\right)^2\\
+&=&\frac{r^2+r-pr-r^2}{p^2}=\frac{r(1-p)}{p^2}=\frac{rq}{p^2}
+\end{eqnarray*}
+\item Obviously $n\geq r+4$, otherwise $Pr=0$. For $r=1$, $Pr=1$ if $n=5$, $Pr=0$ otherwise.\\
+For $r>1$, given that 1st head occurs on the 5th toss, $X=n$ iff there are $r-2$ heads from toss 6 to $n-1$, and the last toss also gives a head.
+\begin{eqnarray*}
+Pr(X=n|\text{1st head occurs on the 5th toss})&=&\left(\binom{n-6}{r-2}p^{r-2}q^{n-r-4}\right)p\\
+&=&\binom{n-6}{r-2}p^{r-1}q^{n-r-4}
+\end{eqnarray*}\\
+\end{enumerate}
+
+\pagebreak
+
+\item Problem 2
+\begin{enumerate}
+\item First we calculate the value of $c$
+\[1=\int^{1}_{0}\int^{1}_{0}f(x,y)\,dy\,dx=c\int^{1}_{0}\int^{1}_{0}4x^2y+y^2\,dy\,dx=c\int^{1}_{0}2x^2+\frac{1}{3}\,dx=c(1)\]
+Hence, $c=1$, $f(x,y)=4x^2y+y^2$. Since $y\in[0,1]$, $x\in[0.5,1]$ in order for $x+y>1.5$
+\begin{eqnarray*}
+Pr(X+Y>1.5)&=&\int^{1}_{0.5}\int^{1}_{1.5-x}4x^2y+y^2\,dy\,dx=\int^{1}_{0.5}\left[2x^2y^2+\frac{y^3}{3}\right]^{1}_{1.5-x}\,dx\\
+&=&\int^{1}_{0.5}-2x^4+\frac{19}{3}x^3-4x^2+\frac{9}{4}x-\frac{19}{24}\,dx\\
+&=&\left[\frac{-2}{5}x^5+\frac{19}{12}x^4-\frac{4}{3}x^3+\frac{9}{8}x^2-\frac{19}{24}x\right]^{1}_{0.5}=\frac{121}{320}
+\end{eqnarray*}
+\item \[E(Y)=\int^{1}_{0}\int^{1}_{0}yf(x,y)\,dy\,dx=\int^{1}_{0}\int^{1}_{0}4x^2y^2+y^3\,dy\,dx=\int^{1}_{0}\frac{4}{3}x^2+\frac{1}{4}\,dx=\frac{25}{36}\]
+\item \[E(X)=\int^{1}_{0}\int^{1}_{0}xf(x,y)\,dy\,dx=\int^{1}_{0}\int^{1}_{0}4x^3y+xy^2\,dy\,dx=\int^{1}_{0}2x^3+\frac{1}{3}x\,dx=\frac{2}{3}\]
+\[E(XY)=\int^{1}_{0}\int^{1}_{0}4x^3y^2+xy^3\,dy\,dx=\int^{1}_{0}\frac{4}{3}x^3+\frac{1}{4}x\,dx=\frac{11}{24}\]
+\[Cov(X,Y)=E(XY)-E(X)E(Y)=\frac{11}{24}-\left(\frac{2}{3}\right)\left(\frac{25}{36}\right)=\frac{-1}{216}\]
+\item \begin{eqnarray*}
+f(x|y)&=&\frac{f(x,y)}{f_Y(y)}=\frac{f(x,y)}{\int^{1}_{0}f(x,y)\,dx}=\frac{4x^2y+y^2}{\int^{1}_{0}4x^2y+y^2\,dx}\\
+&=&\frac{4x^2y+y^2}{\frac{4}{3}y+y^2}=\frac{3y+12x^2}{3y+4}
+\end{eqnarray*}
+\item From (d), $f(x|Y=0.5)=\frac{24x^2+3}{11}$
+\[E(X|Y=0.5)=\int^{1}_{0}x\frac{24x^2+3}{11}\,dx=\frac{1}{11}\left[6x^4+\frac{3}{2}x^2\right]^{1}_{0}=\frac{15}{22}\]\\
+\end{enumerate}
+
+\pagebreak
+
+\item Problem 3\\
+Let $r$ be radius and $k$ be the ratio of height to radius, then we have $V=(\pi r^2)(kr)=k\pi r^3$, hence $r=\left(\frac{V}{k\pi}\right)^{\frac{1}{3}}$\\
+Minimizing amount of metal required is equivalent to minimizing total surface area of the can, since thickness is the same everywhere.\\
+Surface area $A=f(k)=2\pi r^2+(2\pi r)(kr)=2\pi r^2(1+k)=2\pi\left(\frac{V}{k\pi}\right)^{\frac{2}{3}}\left(1+k\right)=c(1+k)k^{\frac{-2}{3}}$ for some constant $c>0$\\
+$f'(k)=c\left(\frac{1}{3}k^{\frac{-2}{3}}+\frac{-2}{3}k^{\frac{-5}{3}}\right)$
+Solve for $f'(k)=0$: $\frac{1}{3}k^{\frac{-2}{3}}=\frac{2}{3}k^{\frac{-5}{3}}$, $k=2$\\
+For checking, $f''(2)=c\left(\frac{-2}{9}2^{\frac{-5}{3}}+\frac{10}{9}2^{\frac{-8}{3}}\right)>0$. Hence, $f(k)$ attains minimum at 2.\\
+Metal required is minimized when height to radius ratio is 2.\\
+
+\pagebreak
+
+\item Problem 4
+\begin{enumerate}
+\item $\begin{pmatrix}4&6&14\\4&1&3\end{pmatrix}\begin{pmatrix}x_1\\x_2\\x_3\end{pmatrix}
+=\begin{pmatrix}4\\3\end{pmatrix}$
+, which gives $5x_2+11x_3=1$\\
+Hence, $(x_1, x_2, x_3)=(t+0.7, 11t+0.2, -5t)\forall t\in\RR$
+\item From $2x_1+4x_2=10$ and $3x_1+x_2=5$, we have $(x_1,x_2)=(1,2)$\\
+However, $7x_1+3x_2=13\neq 3$, so the system has no solution.\\
+From this, we know that the system does not always have solutions, e.g. R.H.S=$(10,5,3)$\\
+Suppose 
+$\begin{pmatrix}x_1\\x_2\\x_3\end{pmatrix}$ and $\begin{pmatrix}y_1\\y_2\end{pmatrix}$ are solutions for the equations in (a) and (b) respectively. Then\\
+$\begin{pmatrix}x_1&x_2&x_3\end{pmatrix}\begin{pmatrix}10\\5\\3\end{pmatrix}=\begin{pmatrix}x_1&x_2&x_3\end{pmatrix}\begin{pmatrix}2&4\\3&1\\7&3\end{pmatrix}\begin{pmatrix}y_1\\y_2\end{pmatrix}=\left(\begin{pmatrix}2&3&7\\4&1&3\end{pmatrix}\begin{pmatrix}x_1\\x_2\\x_3\end{pmatrix}\right)^T\begin{pmatrix}y_1\\y_2\end{pmatrix}\\=\begin{pmatrix}2&3\end{pmatrix}\begin{pmatrix}y_1\\y_2\end{pmatrix}$\\
+Hence this is the relationship between the solutions of part (a) and (b).\\
+\end{enumerate}
+
+\pagebreak
+
+\item Problem 5
+\begin{enumerate}
+\item By Taylor series expansion, $f(x_n+\e)=f(x_n)+f'(x_n)\e+\frac{f''(x_n)}{2}\e^2+\cdots$\\
+By choosing $\e=-\frac{f(x_n)}{f'(x_n)}$, the 1st order term cancels out the constant term.\\
+Geometrically, $x_{n+1}$ is the intersection of the tangent line to the curve at $(x_n, f(x_n))$ with the x-axis.\\
+Proof of convergence: Define $\varphi(x)=x-\frac{f(x)}{f'(x)}$. Suppose $x^*$ is the solution, i.e. $f(x^*)=0$.\\
+$\varphi(x_n)=x_{n+1}$, $\varphi(x^*)=x^*$. Define $\e_n=x_n-x^*$\\
+By mean-value theorem, $\e_{n+1}=x_{n+1}-x^*=\varphi(x_n)-\varphi(x^*)=\varphi'(\z_n)(x_n-x^*)=\varphi'(\z_n)(\e_n)$\\
+for some $\z_n\in[x_n,x^*]$. Note that $\varphi'(x)=\frac{f(x)f''(x)}{(f'(x))^2}$, hence $\varphi'(x^*)=0$\\
+Therefore, there exists $\d>0$ such that $\forall x\in (x^*-\d, x^*+\d)$, $|\varphi'(x)|<\frac{1}{2}$\\
+By choosing $x_1\in(x^*-\d, x^*+\d)$, $|\varphi'(\z_1)|<\frac{1}{2}$, so $|\e_2|<\frac{1}{2}|\e_1|$\\
+Inductively, $|\e_n|\rightarrow 0$, i.e. $x_n\rightarrow x^*$\\
+By Taylor series expansion, $0=f(x^*)=f(x_n-\e_n)=f(x_n)-f'(x_n)\e_n+\frac{1}{2}f''(\z_n){\e_n}^2$\\
+for some $\z_n\in[x_n, x^*]$, thus $f'(x_n)\e_n-f(x_n)=\frac{1}{2}f''(\z_n){\e_n}^2$\\
+$\e_{n+1}=x_{n+1}-x^*=x_n-x^*-\frac{f(x_n)}{f'(x_n)}=\frac{f''(\z_n){\e_n}^2}{2f'(x_n)}$\\
+i.e. $\frac{\e_{n+1}}{{\e_n}^2}=\frac{f''(\z_n)}{2f'(x_n)}\rightarrow\frac{f''(x^*)}{2f'(x^*)}$
+so convergence is quadratic.
+\item $f'(x)=\frac{-1}{x^2}$
+\[x_{n+1}=x_n-\frac{\frac{1}{x_n}-Q}{\frac{-1}{{x_n}^2}}=x_n+x_n-Q{x_n}^2=x_n(2-Qx_n)\]
+The following MATLAB code is executed to calculate $1/e$ with Newton method:
+\begin{verbatim}
+e=2.718281828;a=1/e;x=0.3;count=0;
+while abs(x-a)>0.5*10^-6
+    x=x*(2-e*x);
+    count=count+1;
+end
+disp(x)
+disp(count)
+\end{verbatim}
+It returns 0.367879 after 3 iterations.\\
+Hence, 3 iterations is needed for $x_0=0.3$\\
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c|c|}
+    \hline
+    $n$ & $x_n$     & $f(x_n)$ \\ \hline
+    0 & 0.3000000 & 0.6150515 \\ \hline
+    1 & 0.3553546 & 0.0958084 \\ \hline
+    2 & 0.3674530 & 0.0031545 \\ \hline
+    3 & 0.3678790 & 0.0000037 \\ \hline
+    4 & 0.3678794 & 0.0000000 \\ \hline
+\end{tabular}
+\end{table}\\
+However, when $x_0=1$, the sequence $x_n$ fails to converge, since it is too far away from the actual answer. No result is returned.
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c|c|}
+    \hline
+    $n$ & $x_n$       & $f(x_n)$   \\ \hline
+    0 & 1.0000000   & 0.6150515  \\ \hline
+    1 & -0.7182818  & -4.1104930 \\ \hline
+    2 & -2.8390033  & -3.0705181 \\ \hline
+    3 & -27.5871944 & -2.7545305 \\ \hline
+\end{tabular}
+\end{table}\\
+\end{enumerate}
+
+\pagebreak
+
+\item Problem 6\\
+The line $p_n$ passes through $(x_n, F(x_n))$ and $(x_{n+1},0)$, hence its slope equals:
+\[p_n'(x)=F'(x_n)=\frac{F(x_n)-0}{x_n-x_{n+1}}\]
+Hence $x_n-x_{n+1}=\frac{F(x_n)}{F'(x_n)}$, which gives $x_{n+1}=x_n-\frac{F(x_n)}{F'(x_n)}$\\
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.5\textwidth]{Q6.jpg}
+\caption{\label{fig:Q6}Illustration of Newton method}
+\end{figure}
+
+\pagebreak
+
+\item Problem 7\\
+For $S(T)\geq E$, $\max(S(T)-E,0)+\max(E-S(T),0)=S(T)-E+0=|S(T)-E|$\\
+For $S(T)\leq E$, $\max(S(T)-E,0)+\max(E-S(T),0)=0+E-S(T)=|S(T)-E|$\\
+Hence $\max(S(T)-E,0)+\max(E-S(T),0)\equiv|S(T)-E|$
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.5\textwidth]{Q7.jpg}
+\caption{\label{fig:Q7}Payoff Diagram of Bottom Straddle}
+\end{figure}
+
+\pagebreak
+
+\item Problem 8\\
+Let $S_t$ denote the asset price at expiry date, $x=\frac{E_3-E_1}{2}=E_3-E_2=E_2-E_1$\\
+Payoff=$\max(S_t-E_1,0)+\max(S_t-E_3,0)-2\max(S_t-E_2,0)$\\
+For $S_t\leq E_1$, payoff$=0+0-0=0$\\
+For $E_1<S_t\leq E_2$, payoff$=S_t-E_1+0-0=x+S_t-E_2=x-|S_t-E_2|$\\
+For $E_2<S_t<E_3$, payoff$=S_t-E_1+0-2(S_t-E_2)=2E_2-E_1-S_t=x+E_2-S_t=x-|S_t-E_2|$\\
+For $E_3\leq S_t$, payoff$=S_t-E_1+S_t-E_3-2(S_t-E_2)=E_1+E_3-2E_2=0$\\
+Therefore, payoff$=x-|S_t-E_2|\forall S_t\in(E_1,E_3)$, and 0 otherwise.
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.5\textwidth]{Q8.jpg}
+\caption{\label{fig:Q8}Payoff Diagram of Butterfly Spread}
+\end{figure}
+
+\pagebreak
+
+\item Problem 9\\
+For the bottom straddle, the holder would like the asset price on the expiry date to deviate greatly from the strike. The holder does not care whether the asset price is higher or lower than the strike, but as long as it deviates more, the holder earns more.\\
+For the butterfly spread, the holder would like the asset price to expire between $E_1$ and $E_3$. In addition, given that the asset price expires between $E_1$ and $E_3$, the holder earns more when the asset price expires near $E_2$, regardless of whether it is higher or lower than $E_2$.\\
+
+\pagebreak
+
+\item Problem 10
+\begin{eqnarray*}
+D(t)=e^{rt}D_0&=&\left(1+\frac{r_c}{m}t\right)^mD_0\\
+e^{rt}&=&\left(1+\frac{r_c}{m}t\right)^m\\
+e^{\frac{rt}{m}}&=&1+\frac{r_c}{m}t\\
+r_c&=&\frac{m}{t}\left(e^{\frac{rt}{m}}-1\right)
+\end{eqnarray*}
+When $m$ is large, $\frac{rt}{m}$ becomes small\\
+$r_c=\frac{m}{t}\left(e^{\frac{rt}{m}}-1\right)\approx\frac{m}{t}\left(1+\frac{rt}{m}-1\right)=r$\\
+Therefore, $r_c\approx r$ when $m$ is large
+
+\pagebreak
+
+\item Problem 11
+\[D(t)=(1+r\d t)^LD_0=e^{\log(1+rt/L)^L}D_0=e^{L\log(1+rt/L)}D_0\]
+As $L\rightarrow\infty$, $rt/L\rightarrow 0$. Also, $\log(1+\e)=\e+O(\e^2)$ as $\e\rightarrow 0$\\
+Hence $\frac{\log(1+\e)}{\e}=1+O(\e)\rightarrow 1$ as $\e\rightarrow 0$, which gives $\log(1+\e)\rightarrow\e$\\
+Therefore, as $L\rightarrow\infty$,
+\[e^{L\log(1+rt/L)}D_0\rightarrow e^{L(rt/L)}D_0=e^{rt}D_0\]
+Suppose $D(t_{i+1})=\left(1+r\sqrt{\d t}\right)D(t_i)$
+Then,
+\[D(t)=\left(1+r\sqrt{\frac{t}{L}}\right)^LD_0=e^{L \log(1+r\sqrt{t/L})}D_0\]
+Using similar arguments, as $L\rightarrow\infty$, $r\sqrt{t/L}\rightarrow 0$.\\
+Hence $L\log(1+r\sqrt{t/L})\rightarrow L(r\sqrt{t/L})=(r\sqrt{t})\sqrt{L}$, which is unbounded.\\
+This implies that $D(t)=e^{L \log(1+r\sqrt{t/L})}D_0\rightarrow\infty$ as $L\rightarrow\infty$\\
+Suppose $D(t_{i+1})=\left(1+r(\d t)^{3/2}\right)D(t_i)$
+Then,
+\[D(t)=\left(1+r\left(\frac{t}{L}\right)^{3/2}\right)^LD_0=e^{L \log(1+r(t/L)^{3/2})}D_0\]
+As $L\rightarrow\infty$, $r\sqrt{t/L}\rightarrow 0$.\\
+Hence $L \log(1+r(t/L)^{3/2})\rightarrow L(r(t/L)^{3/2})=(rt^{3/2})/\sqrt{L}\rightarrow 0$\\
+This implies that $D(t)=e^{L \log(1+r(t/L)^{3/2})}D_0\rightarrow e^0D_0=D_0$ as $L\rightarrow\infty$\\
+Both models are not consistent with continuous compounding in the limit $L\rightarrow\infty$\\
+
+\pagebreak
+
+\item Problem 12\\
+Assume $C<S-Ee^{-rt}$, or equivalently, $S-C>-Ee^{-rt}$\\
+Arbitrage can be done in the following way:\\
+Step 1: Buy a call at $C$, short sell the underlying at $S$, gaining a profit of $S-C$.\\
+Step 2: Deposit the amount of $S-C$ at the rate of $r$ until $T$.\\
+Step 3: At maturity, there are two cases.\\
+Case 1: $S(T)\geq E$, the call option is exercised at strike $E$, and the underlying purchased is used to settle the short position. At the same time, we receive $(S-C)e^{rT}$.\\ 
+Note that $(S-C)e^{rT}>(Ee^{-rT})e^{rT}=E$. There is a net income of $(S-C)e^{rT}-E$.\\ 
+Case 2: $S(T)<E$, the call option is discarded. The underlying is bought at $S(T)$ to settle the short position. At the same time, we receive $(S-C)e^{rT}$.\\
+Note that $(S-C)e^{rT}>E>S(T)$, there is a profit of $(S-C)e^{rT}-S(T)$.\\
+Under the assumption of no arbitrage, the condition of $C<S-Ee^{-rT}$ shall not exist.
+Hence, $C\geq S-Ee^{-rt}$.
+
+\pagebreak
+
+\item Problem 13
+\begin{enumerate}
+\item Assume there is no arbitrage opportunity.\\
+From Problem 12, if $C<S-Ee^{-rt}$, arbitrage can be done by selling a unit of asset at $S$ and investing $Ee^{-rt}$ at interest rate $r$. If $C<0$, arbitrage can be done by receiving money from buying a call option and leaving it unexercised. Therefore, $C\geq\max(S-Ee^{-rt},0)$\\
+If $C>S$, then write a call option to receive $C$ and buy one unit of asset at $S$. Initial gain$=C-S>0$. Denote asset price at expiry as $S_t$. If $S_t>E$, the option is exercised, so transfer the asset to the option holder. If $S_t\leq E$, the option is not exercised, so sell the asset to gain $S_t>0$. In either case, a profit is secured at the beginning and no loss is incurred at expiry. This is an arbitrage, violating the assumption. Therefore, $C\geq S$ under the no-arbitrage assumption.
+\item According to put-call parity, $P=C+Ee^{-rt}-S$
+\[P\geq 0+Ee^{-rt}-S=Ee^{-rt}-S \]
+\[P\geq (S-Ee^{-rt})+Ee^{-rt}-S=0\]
+Together, $P\geq\max(Ee^{-rt}-S,0)$
+\[P\leq C+Ee^{-rt}-C=Ee^{-rt}\]\\
+\end{enumerate}
+
+\pagebreak
+
+\item Problem 14\\
+Buy a put option with strike price $E_1$, another put option with strike price $E_3>E_1$, then write two put options with strike price $E_2=\frac{E_1+E_3}{2}$.\\
+Let $S_t$ denote the asset price at expiry. $x=\frac{E_3-E_1}{2}=E_3-E_2=E_2-E_1$\\
+Payoff=$\max(E_1-S_t,0)+\max(E_3-S_t,0)-2\max(E_2-S_t,0)$\\
+For $S_t\geq E_3$, payoff$=0+0-0=0$\\
+For $E_3>S_t\geq E_2$, payoff$=0+(E_3-S_t)-0=x+E_2-S_t=x-|S_t-E_2|$\\
+For $E_2>S_t>E_1$, payoff$=0+(E_3-S_t)-2(E_2-S_t)=E_3-2E_2+S_t=x+S_t-E_2=x-|S_t-E_2|$\\
+For $E_1\geq S_t$, payoff$=(E_1-S_t)+(E_3-S_t)-2(E_2-S_t)=E_1+E_3-2E_2=0$\\
+\begin{table}[ht]
+	\centering
+    \begin{tabular}{|l|l|l|l|l|}
+    \hline
+    Situation         & Put with $E_1$ & Put with $E_2$ & Put with $E_3$ & Payoff \\ \hline
+    $S_t<E_1$         & Exercise       & Exercise       & Exercise       & 0\\ \hline
+    $E_1\leq S_t<E_2$ & Discard        & Exercise       & Exercise       & $x-|S_t-E_2|$\\ \hline
+    $E_2\leq S_t<E_3$ & Discard        & Discard        & Exercise       & $x-|S_t-E_2|$\\ \hline
+    $E_3\leq S_t$     & Discard        & Discard        & Discard        & 0     \\ \hline
+    \end{tabular}
+\end{table}\\
+Therefore, payoff$=x-|S_t-E_2|\forall S_t\in(E_1,E_3)$, and 0 otherwise, which is identical to the one composed in Q8.
+Let $C_1,C_2,C_3$ denote the price of call options with strike price $E_1,E_2,E_3$ respectively. Define $P_1,P_2,P_3$ similarly.\\
+Cost of butterfly spread with call options$=C_1-2C_2+C_3$\\
+Cost of butterfly spread with put options:
+\begin{eqnarray*}
+P_1-2P_2+P_3&=&(C_1+E_1e^{-rt}-S)-2(C_2+E_2e^{-rt}-S)+(C_3+E_3e^{-rt}-S)\\
+&=&C_1-2C_2+C_3+e^{-rt}(E_1-2E_2+E_3)\\
+&=&C_1-2C_2+C_3
+\end{eqnarray*}
+Hence, the set-up cost is also the same.\\
+
+\pagebreak
+
+\item Problem 15\\
+Assume $F>S(0)e^{rT}$,\\
+Arbitrage can be done in the following way:\\
+Step 1: Borrow $S(0)$ at rate $r$ for time $T$.\\
+Step 2: Buy the underlying at $S(0)$, short a forward at $F$.\\
+Step 3: At expiry, repay $S(0)e^{rT}$ and receive $F$, yielding a profit of $F-S(0)e^{rT}$.\\
+\newline
+Assume $F<S(0)e^{rT}$,\\
+Arbitrage can be done in the following way:\\
+Step 1: Short sell the underlying for $S(0)$, buy a forward at $F$.\\
+Step 2: Deposit $S(0)$ at rate $r$ for time $T$.\\
+Step 3: At expiry, pay $F$ and receive $S(0)e^{rT}$, yielding a profit of $S(0)e^{rT}-F$.\\
+\newline
+Under the assumption of no arbitrage, the above conditions shall not exist.\\
+Therefore, the fair price for $F$ is $S(0)e^{rT}$.
+\end{enumerate}
+\end{document}
